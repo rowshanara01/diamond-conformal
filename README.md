@@ -1,33 +1,53 @@
-# Diamond Pricing with GUARANTEED Prediction Intervals (REAL data) #
+# Diamond Pricing with Guaranteed Prediction Intervals (Real Data)
 
-Data: 53,940 ashol hirer record (seaborn-data, diamonds.csv). Model sudhu "dam koto" na, bole **"90% shomoy ashol dam ei range e thakbe"**.
+**Data:** 53,940 real diamond records (seaborn-data, `diamonds.csv`).
 
-## Chalanor niyom ##
+The model doesn't just say "how much it costs." It says:
+**"90% of the time, the true price will fall inside this range."**
+
+## How to run
+
+```bash
 pip install -r requirements.txt
-python train.py          # clean -> models -> monotonic -> conformal interval -> segment coverage
+python train.py                   # clean -> models -> monotonic -> conformal interval -> segment coverage
 pytest -q
-uvicorn app.main:app --reload     # POST /appraise  (/docs)
-(data na thakle: python download_data.py)
+uvicorn app.main:app --reload     # POST /appraise  (docs at /docs)
+```
 
-## Ja ja ache (high-level)
-1. Real data cleaning: dimension 0 / 58.9mm typo, 145ta duplicate row (dedupe na korle test row er ~0.5% er twin train e thake)
-2. Log-price modeling, baseline (price/carat) vs linear vs gradient boosting
-3. MONOTONIC constraint: carat/quality barle dam komte parbe na (domain knowledge model e dhukano). Tar dam: accuracy ektu kome (5.8% -> 6.5% median error)
-4. CONFORMAL PREDICTION (Conformalized Quantile Regression): calibration set theke 'koto bhul hoy' mepe interval boro kora.
-   Raw quantile regression 87% cover kore (lokkho 90%), conformal ta thik 90%
-5. Segment-wise coverage audit: overall 90% mane shob group e 90% na. Fair cut e ~82% (nicher section dekho)
-6. Train / Calibration / Test 3-way split (calibration data model train e use hoy na)
-7. API: estimate + range + asking price verdict + sparse-region warning (carat beshi hole data kom)
+If the data is missing, run:
 
-## Sotti kotha (limitation)
-- Conformal er guarantee **marginal**: shob hire milie 90%. Kono ekta group (jemon Fair cut) e kom hote pare.
-- Guarantee shudhu tokhon, jokhon notun data train data r moto-i (exchangeability). Notun bazar/shomoy hole bhenge jay (drift).
-- "above_range" mane na je overpriced; hoyto special feature (certificate, fluorescence) model e nai.
-- Dimension (x,y,z), certificate, fluorescence, shomoy model e nai.
+```bash
+python download_data.py
+```
 
-## Challenge
-1. Mondrian/class-conditional conformal: prottek cut e alada 90% guarantee
-2. Normalized conformal (interval width difficulty onujayi)
-3. Adaptive conformal inference (shomoy bodlale coverage ta thik rakha)
-4. SHAP/ICE plot diye price vs carat dekho
-5. Price drift monitoring (fraud-mlops er monitor.py reuse)
+## What's included
+
+1. **Real data cleaning**
+   Fixes zero-dimension rows and the 58.9 mm typo, and removes 145 duplicate rows. Without deduplication, roughly 0.5% of test rows would have an identical twin in the training set.
+2. **Log-price modeling**
+   Compares a baseline (price per carat), a linear model, and gradient boosting.
+3. **Monotonic constraints**
+   A higher carat or better quality can never lower the predicted price. This builds domain knowledge into the model. The cost is a small drop in accuracy (median error goes from 5.8% to 6.5%).
+4. **Conformal prediction (Conformalized Quantile Regression)**
+   Uses a calibration set to measure how wrong the model typically is, then widens the interval accordingly. Raw quantile regression covers only 87% (target: 90%), while the conformal version hits 90%.
+5. **Segment-wise coverage audit**
+   90% overall does not mean 90% in every group. For example, Fair-cut diamonds get about 82% (see the audit output).
+6. **Train / calibration / test three-way split**
+   Calibration data is never used to train the model.
+7. **API**
+   Returns a point estimate, a price range, a verdict on the asking price, and a sparse-region warning (data is thin for large carat sizes).
+
+## Limitations
+
+- **The guarantee is marginal.** Coverage is 90% across all diamonds combined, but a specific group (such as Fair cut) can fall short.
+- **Exchangeability is required.** The guarantee only holds when new data looks like the training data. It breaks under a new market or over time (drift).
+- **"Above range" does not mean overpriced.** A special feature (certificate, fluorescence) that the model doesn't know about could explain the gap.
+- **Missing inputs.** The model does not use the dimensions (x, y, z), certificate, fluorescence, or time.
+
+## Challenges / next steps
+
+1. **Mondrian (class-conditional) conformal:** a separate 90% guarantee for each cut.
+2. **Normalized conformal:** interval width adapts to how difficult each prediction is.
+3. **Adaptive conformal inference:** keeps coverage correct when the data changes over time.
+4. **SHAP / ICE plots:** examine how price varies with carat.
+5. **Price drift monitoring:** reuse `monitor.py` from the fraud-mlops project.
