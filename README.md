@@ -1,4 +1,4 @@
-# Diamond Pricing with GUARANTEED Prediction Intervals (REAL data)
+# Diamond Pricing with GUARANTEED Prediction Intervals (REAL data) #
 
 Data: 53,940 ashol hirer record (seaborn-data, diamonds.csv). Model sudhu "dam koto" na, bole **"90% shomoy ashol dam ei range e thakbe"**.
 
