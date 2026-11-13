@@ -37,7 +37,7 @@ python download_data.py
 7. **API**
    Returns a point estimate, a price range, a verdict on the asking price, and a sparse-region warning (data is thin for large carat sizes).
 
-## Limitations
+## Limitations ##
 
 - **The guarantee is marginal.** Coverage is 90% across all diamonds combined, but a specific group (such as Fair cut) can fall short.
 - **Exchangeability is required.** The guarantee only holds when new data looks like the training data. It breaks under a new market or over time (drift).
