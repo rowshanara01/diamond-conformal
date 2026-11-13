@@ -20,7 +20,7 @@ If the data is missing, run:
 python download_data.py
 ```
 
-## What's included
+## What's included ##
 
 1. **Real data cleaning**
    Fixes zero-dimension rows and the 58.9 mm typo, and removes 145 duplicate rows. Without deduplication, roughly 0.5% of test rows would have an identical twin in the training set.
