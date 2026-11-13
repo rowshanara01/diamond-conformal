@@ -44,7 +44,7 @@ python download_data.py
 - **"Above range" does not mean overpriced.** A special feature (certificate, fluorescence) that the model doesn't know about could explain the gap.
 - **Missing inputs.** The model does not use the dimensions (x, y, z), certificate, fluorescence, or time.
 
-## Challenges / next steps
+## Challenges / next steps ##
 
 1. **Mondrian (class-conditional) conformal:** a separate 90% guarantee for each cut.
 2. **Normalized conformal:** interval width adapts to how difficult each prediction is.
