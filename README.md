@@ -2,7 +2,7 @@
 
 Data: 53,940 ashol hirer record (seaborn-data, diamonds.csv). Model sudhu "dam koto" na, bole **"90% shomoy ashol dam ei range e thakbe"**.
 
-## Chalanor niyom
+## Chalanor niyom ##
 pip install -r requirements.txt
 python train.py          # clean -> models -> monotonic -> conformal interval -> segment coverage
 pytest -q
