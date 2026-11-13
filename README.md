@@ -1,4 +1,4 @@
-# Diamond Pricing with Guaranteed Prediction Intervals (Real Data)
+# Diamond Pricing with Guaranteed Prediction Intervals (Real Data) #
 
 **Data:** 53,940 real diamond records (seaborn-data, `diamonds.csv`).
 
