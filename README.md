@@ -4,8 +4,7 @@
 
 The model doesn't just say "how much it costs." It says:
 **"90% of the time, the true price will fall inside this range."**
-
-## How to run ##
+#### to run ####
 
 ```bash
 pip install -r requirements.txt
