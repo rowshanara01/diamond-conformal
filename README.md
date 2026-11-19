@@ -2,7 +2,7 @@
 
 **Data:** 53,940 real diamond records (seaborn-data, `diamonds.csv`).
 
-The model doesn't just say "how much it costs." It says:
+The model doesn't justs say "how much it costs." It says:
 **"90% of the time, the true price will fall inside this range."**
 #### to run ####
 
